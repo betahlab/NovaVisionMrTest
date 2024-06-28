@@ -1,28 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:novavison_test/controllers/order_controller.dart';
+import 'package:novavison_test/screens/list_orders.dart';
+import 'package:novavison_test/screens/list_products.dart';
 
-//here is the data
-var data=[
-  {"items":[{"productId":1,"productName":"product1","price":260,"quantity":3}, {"productId":2,"productName":"product2","price":500,"quantity":2},{"productId":3,"productName":"product3","price":320,"quantity":5}],"userName":"Mohamed"},
-  {"items":[{"productId":2,"productName":"product2","price":260,"quantity":8},],"userName":"Sidi"},
-  {"items":[{"productId":1,"productName":"product1","price":260,"quantity":5} ,{"productId":3,"productName":"product3","price":320,"quantity":1}],"userName":"Ahmed"},
-  {"items":[{"productId":1,"productName":"product1","price":260,"quantity":7}, ],"userName":"Brahim"},
-  {"items":[{"productId":1,"productName":"product1","price":260,"quantity":4}, {"productId":2,"productName":"product2","price":500,"quantity":6},{"productId":3,"productName":"product3","price":320,"quantity":7}],"userName":"Abdellahi"},
-
-];
 void main() {
-  runApp(const MyApp());
+  Get.put(OrderController(), permanent: true);
+  runApp(const StartMain());
 }
 
-//Delete this and start your project
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// thme color from figma design
+ThemeData _lightTheme = ThemeData(
+  useMaterial3: true,
+  primaryColor: const Color(0xFFFFAD25),
+  colorScheme: ColorScheme.fromSeed(
+      // surface: lightBg,
+      seedColor: const Color(0xFFFFAD25),
+      brightness: Brightness.light,
+      primary: const Color(0xFFFFAD25)),
+);
+
+class BottomNavController extends GetxController {
+  var tabIndex = 0.obs;
+
+  void changeTabIndex(int index) {
+    tabIndex.value = index;
+  }
+}
+
+class StartMain extends StatelessWidget {
+  const StartMain({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text("This is NovaVisionTest")),
+    return GetMaterialApp(
+      theme: _lightTheme,
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  final BottomNavController bottomNavController =
+      Get.put(BottomNavController());
+
+  HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text('Application de Commandes'),
       ),
+      body: Obx(() {
+        if (bottomNavController.tabIndex.value == 0) {
+          return ListOrders(); // Écran des commandes
+        } else {
+          return const ListProducts(); // Écran des produits
+        }
+      }),
+      bottomNavigationBar: Obx(() => BottomNavigationBar(
+            currentIndex: bottomNavController.tabIndex.value,
+            onTap: (index) {
+              bottomNavController.changeTabIndex(index);
+            },
+            items: [
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart),
+                label: 'Commandes',
+              ),
+              BottomNavigationBarItem(
+                  label: '',
+                  icon: SizedBox(
+                    child: Image.asset(
+                      'assets/images/botom_img.png',
+                      width: 50,
+                      height: 60,
+                    ),
+                  )),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.store),
+                label: 'Produits',
+              ),
+            ],
+          )),
     );
   }
 }
