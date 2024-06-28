@@ -4,6 +4,10 @@ import 'package:novavison_test/controllers/order_controller.dart';
 import 'package:novavison_test/screens/list_orders.dart';
 import 'package:novavison_test/screens/list_products.dart';
 
+///
+///J'utilise Getx pour la gestion de l'état des applications
+///
+///
 void main() {
   Get.put(OrderController(), permanent: true);
   runApp(const StartMain());
@@ -57,9 +61,9 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (bottomNavController.tabIndex.value == 0) {
-          return ListOrders(); // Écran des commandes
+          return ListOrders(); // orders screen
         } else {
-          return const ListProducts(); // Écran des produits
+          return const ListProducts(); // products screen
         }
       }),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
