@@ -49,7 +49,7 @@ void showOrderDetails(BuildContext context, List<Product> items) {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('Close'),
+            child: Text('Fermer'),
           ),
         ],
       );

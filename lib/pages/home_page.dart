@@ -18,7 +18,9 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index == 2 ? 1 : 0;
+      if (index != 1) {
+        _selectedIndex = index;
+      }
     });
   }
 
@@ -61,11 +63,13 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
+      Container(),
       ProductsPage(data: widget.data),
     ];
 
     List<String> _titles = [
       'Liste des commandes',
+      '',
       'Liste des produits',
     ];
 
@@ -119,7 +123,7 @@ class _HomePageState extends State<HomePage> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.store),
             label: 'Products',
           ),
         ],
